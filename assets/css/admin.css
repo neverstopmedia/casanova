@@ -1,0 +1,18 @@
+.d-block{
+    display: block;
+}
+.bg-danger{
+    background-color: #ef7272;
+}
+.bg-success{
+    background-color: #6ec36e;
+}
+.casanova-dot{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.manage-column.column-vat,
+.manage-column.column-sync{
+    width: 40px;
+}
