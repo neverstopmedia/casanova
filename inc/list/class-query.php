@@ -3,10 +3,10 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class Casanova_Casino_Query{
+class Casanova_List_Query{
 
 	/**
-	 * The args to pass to the casanova_get_casinos() query
+	 * The args to pass to the casanova_get_lists() query
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -22,12 +22,12 @@ class Casanova_Casino_Query{
 	public $initial_args = array();
 
 	/**
-	 * The casinos found based on the criteria set
+	 * The lists found based on the criteria set
 	 *
 	 * @var array
 	 * @since 1.0.0
 	 */
-	public $casinos = array();
+	public $lists = array();
 
 	/**
 	 * Holds a boolean to determine if there is an existing $wp_query global.
@@ -50,7 +50,7 @@ class Casanova_Casino_Query{
 	public function __construct( $args = array() ){
 	
 		$defaults = array(
-			'post_type'         	=> 'casino',
+			'post_type'         	=> 'list',
 			'number'   		    	=> 20,
 			'page'              	=> null,
 			'orderby'           	=> 'ID',
@@ -67,7 +67,7 @@ class Casanova_Casino_Query{
 		$this->args 		= $this->initial_args;
 
 		// Update the arguments with the global query if we are in the archive page.
-		if( isset( $GLOBALS['wp_query'] ) && isset( $GLOBALS['wp_query']->query ) && is_post_type_archive( 'casino' ) ){
+		if( isset( $GLOBALS['wp_query'] ) && isset( $GLOBALS['wp_query']->query ) && is_post_type_archive( 'list' ) ){
 			$this->args = array_merge( $this->args, $GLOBALS['wp_query']->query );
 		}
 
@@ -111,16 +111,16 @@ class Casanova_Casino_Query{
 	}
 
 	/**
-	 * Retrieve casinos.
+	 * Retrieve lists.
 	 *
 	 * The query can be modified in two ways; either the action before the
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
 	 * @since 1.0.0
-	 * @return Casanova_Casino[]
+	 * @return Casanova_List[]
 	 */
-	public function get_casinos() {
+	public function get_lists() {
 
 		// Modify the query/query arguments before we retrieve payments.
 		$this->orderby();
@@ -138,15 +138,15 @@ class Casanova_Casino_Query{
 
 				$query->the_post();
 
-				$this->casinos['casinos'][] = new Casanova_Casino( get_the_ID() );
+				$this->lists['lists'][] = new Casanova_List( get_the_ID() );
 			}
-			$this->casinos['max_num_pages'] = $query->max_num_pages;
-			$this->casinos['found_posts'] 	 = $query->found_posts;
+			$this->lists['max_num_pages'] = $query->max_num_pages;
+			$this->lists['found_posts'] 	 = $query->found_posts;
 		}
 
 		$this->maybe_reset_globals();
 
-		return $this->casinos;
+		return $this->lists;
 	}
 
 	/**
@@ -212,12 +212,12 @@ class Casanova_Casino_Query{
 			return;
 		}
 
-		$this->__set( 'orderby', $this->args['order_by'] );
+        $this->__set( 'orderby', $this->args['order_by'] );
 		$this->__unset( 'order_by' );
 	}
 
 	/**
-	 * Specific casinos
+	 * Specific lists
 	 *
 	 * @since   1.0.0
 	 * @return  void

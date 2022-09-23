@@ -8,24 +8,50 @@ class Casanova_List_Actions{
 	* @since 2.0.0
 	*/
 	public function __construct(){
-        add_action( 'manage_list_posts_custom_column' , [$this, 'list_admin_table_columns_data'], 10, 2 );
-		add_filter( 'manage_list_posts_columns', [$this, 'list_admin_table_columns'] );
+		add_action('save_post', [$this, 'on_save_list'], 10, 3);
 	}
 
-    // Add the custom columns to the list post type:
-	public function list_admin_table_columns($columns) {
-		$columns['source'] = __( 'Source', 'casanova' );
-		return $columns;
-	}
+	/**
+	 * When a list is saved, lets update the sync key
+	 *
+	 * @since 1.0.0
+	 */
+	public function on_save_list($post_id, $post){
 
-	// Add the data to the custom columns for the list post type:
-	public function list_admin_table_columns_data( $column, $post_id ) {
-		switch ( $column ) {
-			case 'source' :
-                $source = get_post_meta($post_id, 'list_source', true );
-				echo $source ? $source : 'Site';
-				break;
+		if( $post != null && ($post->post_type !== 'list' || 'auto-draft' == $post->post_status) )
+        return false;
+
+		if( get_field( 'no_sync_global', 'options' ) )
+		return false;
+
+		if( get_field( 'no_sync', $post_id ) )
+		return false;
+
+		if( $connected_sites = get_field( 'connected_sites', $post_id ) ){
+
+			foreach( $connected_sites as $site ){
+
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, get_field( 'url', $site ).'/wp-json/casanova/v1/lists');
+				curl_setopt($ch, CURLOPT_HTTPHEADER, [
+					'Content-Type: application/json',
+					'Authorization: Basic ' . base64_encode( get_field('username', $site)  . ':' . get_field( 'password', $site ) ),
+				]);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['id' => $post_id]) );
+
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+				$result = curl_exec($ch);
+				curl_close($ch);
+
+			}
+
+			// Let's update the last sync
+			update_field( 'last_sync' , date("d-m-Y"), $post_id);
+
 		}
-	}
 
+	}
+  
 }

@@ -46,6 +46,7 @@ class Casanova{
 			self::$_instance->includes();
 
             new Casanova_Casino_Endpoints;
+            new Casanova_List_Endpoints;
 
             new Casanova_Casino_Actions;
             new Casanova_List_Actions;
@@ -68,6 +69,9 @@ class Casanova{
 
         require CASANOVA_DIR . '/inc/list/post-type.php';
         require CASANOVA_DIR . '/inc/list/class-actions.php';
+        require CASANOVA_DIR . '/inc/list/class-list.php';
+        require CASANOVA_DIR . '/inc/list/class-query.php';
+        require CASANOVA_DIR . '/inc/list/class-helper.php';
 
         require CASANOVA_DIR . '/inc/site/post-type.php';
         require CASANOVA_DIR . '/inc/site/class-actions.php';
@@ -80,6 +84,7 @@ class Casanova{
         require CASANOVA_DIR . '/inc/casino/class-actions.php';
 
         require CASANOVA_DIR . '/inc/rest/casino.php';
+        require CASANOVA_DIR . '/inc/rest/list.php';
 
     }
 
