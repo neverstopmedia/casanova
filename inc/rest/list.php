@@ -36,7 +36,7 @@ class Casanova_List_Endpoints extends WP_REST_Controller{
         $data = [];
 
         if( $lists = Casanova_List_Helper::get_lists($args) ){
-            foreach( $lists['lists'] as $key => $list ){
+            foreach( $lists as $key => $list ){
                 $data[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $list, $request ) );
             }
         }
@@ -56,7 +56,7 @@ class Casanova_List_Endpoints extends WP_REST_Controller{
         //get parameters from request
         $params = $request->get_params();
         $item = Casanova_List_Helper::get_lists( [ 'number' => 1, 'post__in' => $params['id'], 'status' => [ 'publish', 'draft' ] ] );
-        $data = isset($item['lists']) ? $this->prepare_item_for_response( $item['lists'][0], $request ) : null;
+        $data = $item ? $this->prepare_item_for_response( $item[0], $request ) : null;
     
         // Let's return the resopnse
         return $item ? new WP_REST_Response( $data, 200 ) : new WP_Error( 401, __( 'No list with this ID found', 'casanova' ) );

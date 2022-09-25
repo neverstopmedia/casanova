@@ -138,10 +138,8 @@ class Casanova_List_Query{
 
 				$query->the_post();
 
-				$this->lists['lists'][] = new Casanova_List( get_the_ID() );
+				$this->lists[] = new Casanova_List( get_the_ID() );
 			}
-			$this->lists['max_num_pages'] = $query->max_num_pages;
-			$this->lists['found_posts'] 	 = $query->found_posts;
 		}
 
 		$this->maybe_reset_globals();

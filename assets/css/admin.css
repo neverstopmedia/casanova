@@ -16,3 +16,8 @@
 .manage-column.column-sync{
     width: 40px;
 }
+
+.acf-field-casino-affiliates-01 .acf-row-handle,
+.acf-field-casino-affiliates-01 .acf-button{
+    display: none !important;
+}

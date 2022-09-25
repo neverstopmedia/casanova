@@ -12,7 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Casanova_Casino_Actions{
 
     public function __construct(){
-		// add_action('save_post', [$this, 'on_save_casino'], 10, 3);
+		add_action('save_post', [$this, 'on_save_casino'], 10, 3);
+		add_action( 'acf/init', [$this, 'acf_casino_affiliate_links'] );
+		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
     }
 
     /**
@@ -31,15 +33,15 @@ class Casanova_Casino_Actions{
 		if( get_field( 'no_sync', $post_id ) )
 		return false;
 
-		if( $connected_sites = get_field( 'connected_sites', 'options' ) ){
+		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list($post_id) ){
 
 			foreach( $connected_sites as $site ){
 
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $site['url'].'/wp-json/casanova/v1/casinos');
+				curl_setopt($ch, CURLOPT_URL, get_field( 'url', $site ).'/wp-json/casanova/v1/casinos');
 				curl_setopt($ch, CURLOPT_HTTPHEADER, [
 					'Content-Type: application/json',
-					'Authorization: Basic ' . base64_encode($site['username'] . ':' . $site['password']),
+					'Authorization: Basic ' . base64_encode(get_field( 'username', $site ) . ':' . get_field( 'password', $site )),
 				]);
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['id' => $post_id]) );
@@ -52,9 +54,108 @@ class Casanova_Casino_Actions{
 			}
 
 			// Let's update the last sync
-			update_field( 'last_sync' , date("d-m-Y"), $post_id);
-
+			$dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+			$dt->setTimestamp(time());
+			update_field( 'last_sync' , $dt->format('Y/m/d H:i:s'), $post_id);
+			
 		}
+		
+	}
+	
+	/**
+	 * Add the acf fields for the casino
+	 *
+	 * @since 1.0.0
+	 */
+	public function acf_casino_affiliate_links(){
+
+		$location = array( array (
+			array (
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'casino',
+			),
+		) );
+
+		$fields = array (
+            array(
+				'key'               => 'casino_affiliates_01',
+				'label'             => 'Links',
+				'name'              => 'casino_affiliate_links',
+				'type'              => 'repeater',
+				'layout'            => 'block',
+				'button_label'      => 'Add new Link',
+				'sub_fields' 		=> array(
+					array (
+						'key'            => 'casino_affiliate_site_id_01',
+						'label'          => 'Site ID',
+						'name'           => 'affiliate_site_id',
+						'parent'         => 'casino_affiliates_01',
+						'type'           => 'text',
+						'required'       => 1,
+						'wrapper' => array(
+							'width' => '10'
+						)
+					),
+					array (
+						'key'            => 'casino_affiliate_site_01',
+						'label'          => 'Site Alias',
+						'name'           => 'affiliate_site',
+						'parent'         => 'casino_affiliates_01',
+						'type'           => 'text',
+						'required'       => 1,
+						'wrapper' => array(
+							'width' => '45'
+						)
+					),
+					array (
+						'key'            => 'casino_affiliate_link_01',
+						'label'          => 'Affiliate Link',
+						'name'           => 'affiliate_link',
+						'parent'         => 'casino_affiliates_01',
+						'type'           => 'text',
+						'required'       => 1,
+						'wrapper' => array(
+							'width' => '45'
+						)
+					)
+				)
+			)
+        );
+
+		acf_add_local_field_group(array(
+			'key' => 'casanova_casino_links',
+			'title' => 'Affiliate Links',
+			'fields' => $fields,
+			'location' => $location,
+		));
+
+		
+	}
+
+	/**
+	 * Sets the connected sites as default values for the casino
+	 *
+	 * @since 1.0.0
+	 */
+	public function acf_casino_default_links( $value, $post_id, $field ){
+
+		if ($value)
+		return $value;
+
+		$value = [];
+		
+		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list( $post_id ) ){
+			foreach( $connected_sites as $site ){
+				$value[] = array(
+					'casino_affiliate_site_id_01' => $site,
+					'casino_affiliate_site_01' => get_field( 'alias', $site ),
+					'casino_affiliate_link_01' => '',
+				);
+			}
+		}
+
+		return $value;
 
 	}
 

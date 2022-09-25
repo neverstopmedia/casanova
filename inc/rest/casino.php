@@ -37,7 +37,7 @@ class Casanova_Casino_Endpoints extends WP_REST_Controller{
         $data = [];
 
         if( $casinos = Casanova_Casino_Helper::get_casinos($args) ){
-            foreach( $casinos['casinos'] as $key => $casino ){
+            foreach( $casinos as $key => $casino ){
                 $data[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $casino, $request ) );
             }
         }
@@ -57,7 +57,7 @@ class Casanova_Casino_Endpoints extends WP_REST_Controller{
         //get parameters from request
         $params = $request->get_params();
         $item = Casanova_Casino_Helper::get_casinos( [ 'number' => 1, 'post__in' => $params['id'], 'status' => [ 'publish', 'draft' ] ] );
-        $data = isset($item['casinos']) ? $this->prepare_item_for_response( $item['casinos'][0], $request ) : null;
+        $data = $item ? $this->prepare_item_for_response( $item[0], $request ) : null;
     
         // Let's return the resopnse
         return $item ? new WP_REST_Response( $data, 200 ) : new WP_Error( 401, __( 'No casino with this ID found', 'casanova' ) );

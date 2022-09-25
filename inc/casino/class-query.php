@@ -138,10 +138,8 @@ class Casanova_Casino_Query{
 
 				$query->the_post();
 
-				$this->casinos['casinos'][] = new Casanova_Casino( get_the_ID() );
+				$this->casinos[] = new Casanova_Casino( get_the_ID() );
 			}
-			$this->casinos['max_num_pages'] = $query->max_num_pages;
-			$this->casinos['found_posts'] 	 = $query->found_posts;
 		}
 
 		$this->maybe_reset_globals();

@@ -25,9 +25,30 @@ function casanova_acf_load_path( $paths ){
 add_filter('acf/settings/load_json', 'casanova_acf_load_path');
 
 function casanova_disable_acf_fields( $field ) {
-    $field['disabled'] = true;
+    $field['readonly'] = true;
     return $field;
 }
 add_filter('acf/load_field/name=last_sync', 'casanova_disable_acf_fields');
-add_filter('acf/load_field/name=delivery_last_sync', 'casanova_disable_acf_fields');
-add_filter('acf/load_field/name=insurance_last_sync', 'casanova_disable_acf_fields');
+add_filter('acf/load_field/name=affiliate_site_id', 'casanova_disable_acf_fields');
+add_filter('acf/load_field/name=affiliate_site', 'casanova_disable_acf_fields');
+add_filter('acf/load_field/name=alias', 'casanova_disable_acf_fields');
+
+/**
+ * Generates an alias from the URL and sets it to the site
+ *
+ * @since 1.0.0
+ */
+function casanova_generate_site_alias( $value, $post_id, $field ){
+    
+    if ($value)
+    return $value;
+
+    if( $url = get_field('url', $post_id) ){
+        $parse = parse_url($url);
+        $value = $parse['host'];
+    }
+
+    return $value;
+
+}
+add_filter('acf/load_value/name=alias', 'casanova_generate_site_alias', 10, 3);

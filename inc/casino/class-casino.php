@@ -86,6 +86,8 @@ class Casanova_Casino{
     public $min_deposit;
     
     public $withdrawal_time;
+
+    public $affiliates;
     
     
     /**
@@ -163,6 +165,8 @@ class Casanova_Casino{
         $this->min_deposit = get_field( 'min_deposit', $casino_id );
 
         $this->withdrawal_time = get_field( 'withdrawal_time', $casino_id );
+
+        $this->affiliates = get_field( 'casino_affiliate_links', $casino_id );
 
     }
     

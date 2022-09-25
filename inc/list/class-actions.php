@@ -48,7 +48,9 @@ class Casanova_List_Actions{
 			}
 
 			// Let's update the last sync
-			update_field( 'last_sync' , date("d-m-Y"), $post_id);
+			$dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+			$dt->setTimestamp(time());
+			update_field( 'last_sync' , $dt->format('Y/m/d H:i:s'), $post_id);
 
 		}
 
