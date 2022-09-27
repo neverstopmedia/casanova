@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Casanova_Casino_Actions{
 
     public function __construct(){
-		add_action('save_post', [$this, 'on_save_casino'], 10, 3);
+		// add_action('save_post', [$this, 'on_save_casino'], 10, 3);
 		add_action( 'acf/init', [$this, 'acf_casino_affiliate_links'] );
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
     }
@@ -140,22 +140,53 @@ class Casanova_Casino_Actions{
 	 */
 	public function acf_casino_default_links( $value, $post_id, $field ){
 
-		if ($value)
-		return $value;
-
-		$value = [];
-		
 		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list( $post_id ) ){
-			foreach( $connected_sites as $site ){
-				$value[] = array(
-					'casino_affiliate_site_id_01' => $site,
-					'casino_affiliate_site_01' => get_field( 'alias', $site ),
-					'casino_affiliate_link_01' => '',
-				);
+
+			if( is_array($value) ){
+
+				$existing_sites = array_column( $value, 'casino_affiliate_site_id_01' );
+
+				if( sizeof( $existing_sites ) == sizeof($connected_sites) ){
+					return $value;
+				}else{
+
+					foreach( $value as $key => $site ){
+						if( !in_array( $site['casino_affiliate_site_id_01'], $connected_sites ) ){
+							unset($value[$key]);
+						}else{
+							$similar[] = $site['casino_affiliate_site_id_01'];
+						}
+					}
+
+					foreach( array_diff( $connected_sites, $similar ) as $site ){
+						$value[] = array(
+							'casino_affiliate_site_id_01' => $site,
+							'casino_affiliate_site_01' => get_field( 'alias', $site ),
+							'casino_affiliate_link_01' => '',
+						);
+					}
+
+					return $value;
+
+				}
+
+			}else{
+
+				foreach( $connected_sites as $site ){
+					$value[] = array(
+						'casino_affiliate_site_id_01' => $site,
+						'casino_affiliate_site_01' => get_field( 'alias', $site ),
+						'casino_affiliate_link_01' => '',
+					);
+				}
+
+				return $value;
+
 			}
+			
 		}
 
-		return $value;
+		return null;
 
 	}
 

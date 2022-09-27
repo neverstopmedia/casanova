@@ -43,8 +43,10 @@ class Casanova_Casino_Helper{
 
         if( $sites ){
             foreach( $sites as $list_sites ){
-                foreach( $list_sites as $site ){
-                    $new_sites[] = $site;
+                if( $list_sites ){
+                    foreach( $list_sites as $site ){
+                        $new_sites[] = $site;
+                    }
                 }
             }
         }
