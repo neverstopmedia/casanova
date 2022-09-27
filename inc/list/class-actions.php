@@ -8,7 +8,7 @@ class Casanova_List_Actions{
 	* @since 2.0.0
 	*/
 	public function __construct(){
-		// add_action('save_post', [$this, 'on_save_list'], 10, 3);
+		add_action('save_post', [$this, 'on_save_list'], 10, 3);
 	}
 
 	/**

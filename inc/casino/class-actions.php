@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Casanova_Casino_Actions{
 
     public function __construct(){
-		// add_action('save_post', [$this, 'on_save_casino'], 10, 3);
+		add_action('save_post', [$this, 'on_save_casino'], 10, 3);
 		add_action( 'acf/init', [$this, 'acf_casino_affiliate_links'] );
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
     }
