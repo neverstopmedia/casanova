@@ -11,6 +11,7 @@ jQuery( document ).ready( function( $ ) {
                 siteIds.push( $(this).data('site') );
             });
         }
+        console.log(siteIds);
 
         return siteIds;
     };
@@ -20,6 +21,8 @@ jQuery( document ).ready( function( $ ) {
         let $form = $(this),
         completedSites = 0,
         isCasino = $("#casino-sites").length;
+
+        console.log(isCasino);
         
         let connectedSites = isCasino ? getCasinoSiteIds() : $("#acf-field_632c65da476cc").val();
         console.log(connectedSites);
