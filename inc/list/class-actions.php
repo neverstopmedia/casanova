@@ -36,18 +36,22 @@ class Casanova_List_Actions{
                 break;
             case 'connected_sites':
 				if( $connected_sites = get_field( 'connected_sites', $post_id ) ){
+					echo '<div class="expandable-section">';
 					foreach( $connected_sites as $site ){
 						echo '<span class="d-block">'.get_the_title($site).'</span>';
 					}
+					echo '</div>';
 				}else{
 					echo '-';
 				}
                 break;
             case 'list_order':
 				if( $casinos = get_field( 'list_order', $post_id ) ){
+					echo '<div class="expandable-section">';
 					foreach( $casinos as $casino ){
 						echo '<span class="d-block">'.get_the_title($casino['list_order_item']).'</span>';
 					}
+					echo '</div>';
 				}else{
 					echo '-';
 				}

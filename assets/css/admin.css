@@ -84,3 +84,14 @@
 .acf-field-casino-affiliates-01 .acf-button{
     display: none !important;
 }
+
+.expandable-section{
+    max-height: 100px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.expandable-section.open{
+    max-height: 100%;
+    overflow: visible;
+}
