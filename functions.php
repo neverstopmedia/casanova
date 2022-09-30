@@ -27,7 +27,7 @@ class Casanova{
     private function define_constants(){
         define( 'CASANOVA_DIR', get_template_directory() );
         define( 'CASANOVA_URI', get_template_directory_uri() );
-        define( 'CASANOVA_VERSION', '1.0.6' );
+        define( 'CASANOVA_VERSION', '1.0.7' );
         define( 'CASANOVA_API_VERSION', '1' );
         define( 'CASANOVA_API_ROUTE', 'casanova/v'.CASANOVA_API_VERSION );
     }
