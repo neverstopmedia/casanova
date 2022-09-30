@@ -14,13 +14,13 @@ $post_id = isset( $post->ID ) && $post->ID ? $post->ID : null;
     if( $post_id && $post->post_type == 'casino' ){ 
     $casino_sites = Casanova_Casino_Helper::get_casinos_from_list($post_id);
     ?>
-    <input type="hidden" name="casino-sites" id="casino-sites" value="<?php echo json_encode($casino_sites, true) ?>">
+    <input type="hidden" name="casino-sites" id="casino-sites" value='<?php echo json_encode($casino_sites, true) ?>'>
     
     <?php 
     if( $casino_sites ){ 
         foreach( $casino_sites as $casino_site ){
         ?>
-        <input type="hidden" id="site-name-<?php echo $casino_site ?>" value="<?php echo get_the_title( $casino_site ) ?>">
+        <input class="site-ids" data-site="<?php echo $casino_site ?>" type="hidden" id="site-name-<?php echo $casino_site ?>" value="<?php echo get_the_title( $casino_site ) ?>">
     <?php } } ?>
     
     <?php } ?>

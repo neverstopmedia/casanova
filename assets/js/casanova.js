@@ -2,14 +2,27 @@ jQuery( document ).ready( function( $ ) {
 
     let flag = false;
 
+    let getCasinoSiteIds = () => {
+
+        let siteIds = [];
+        if( $(".site-ids").length ){
+
+            $(".site-ids").each(function(){
+                siteIds.push( $(this).data('site') );
+            });
+        }
+
+        return siteIds;
+    };
+
     $( '#post' ).on( 'submit', function(e) {
 
         let $form = $(this),
         completedSites = 0,
         isCasino = $("#casino-sites").length;
         
-        let connectedSites = isCasino ? JSON.parse($("#casino-sites").val()) : $("#acf-field_632c65da476cc").val();
-
+        let connectedSites = isCasino ? getCasinoSiteIds() : $("#acf-field_632c65da476cc").val();
+        console.log(connectedSites);
         if( connectedSites.length == 0 )
         return true;
 
