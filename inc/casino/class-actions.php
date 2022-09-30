@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Casanova_Casino_Actions{
 
     public function __construct(){
-		add_action('save_post', [$this, 'on_save_casino'], 10, 3);
 		add_action( 'acf/init', [$this, 'acf_casino_affiliate_links'] );
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
     }
@@ -20,9 +19,10 @@ class Casanova_Casino_Actions{
     /**
 	 * When a casino is saved, lets update the sync key
 	 *
+	 * @deprecated
 	 * @since 1.0.0
 	 */
-	public function on_save_casino($post_id, $post){
+	public function deprecated_on_save_casino($post_id, $post){
 
 		if( $post != null && ($post->post_type !== 'casino' || 'auto-draft' == $post->post_status) )
         return false;
@@ -36,21 +36,7 @@ class Casanova_Casino_Actions{
 		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list($post_id) ){
 
 			foreach( $connected_sites as $site ){
-
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, get_field( 'url', $site ).'/wp-json/casanova/v1/casinos');
-				curl_setopt($ch, CURLOPT_HTTPHEADER, [
-					'Content-Type: application/json',
-					'Authorization: Basic ' . base64_encode(get_field( 'username', $site ) . ':' . get_field( 'password', $site )),
-				]);
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['id' => $post_id]) );
-
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-				$result = curl_exec($ch);
-				curl_close($ch);
-
+				Casanova_Casino_Helper::update_casino_rest( $site, $post_id );
 			}
 
 			// Let's update the last sync
@@ -141,6 +127,8 @@ class Casanova_Casino_Actions{
 	public function acf_casino_default_links( $value, $post_id, $field ){
 
 		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list( $post_id ) ){
+
+			$sites = [];
 
 			if( is_array($value) ){
 

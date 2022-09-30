@@ -1,3 +1,66 @@
+:root{
+    --color-primary: #bf1e1e;
+    --color-borders: rgba(0,0,0,.1);
+}
+.mt-10{
+    margin-top: 10px;
+}
+.mr-10{
+    margin-right: 10px;
+}
+
+.casanova-popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: #fff;
+    box-shadow: 0 3px 24px rgba(0,0,0,.1);
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    z-index: 100000;
+    width: 50vw;
+    max-height: 800px;
+    opacity: 0;
+    overflow-y: auto;
+    visibility: hidden;
+}
+.casanova-popup-overlay{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99999;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,.4);
+    opacity: 0;
+    visibility: hidden;
+}
+.casanova-submit .casanova-popup,
+.casanova-submit .casanova-popup-overlay{
+    opacity: 1;
+    visibility: visible;
+}
+.casanova-sites-list h1{
+    margin: 0 0 30px;
+}
+.casanova-sites-list li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-size: 16px;
+}
+.casanova-sites-list li + li{
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+.casanova-sites-list li.success{
+    color: #51b751;
+}
+
 .d-block{
     display: block;
 }

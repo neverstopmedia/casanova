@@ -23,12 +23,30 @@ class Casanova_Casino_Helper{
         return $casinos->get_casinos();
     }
 
+    public static function update_casino_rest( $site, $post_id ){
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, get_field( 'url', $site ).'/wp-json/casanova/v1/casinos');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Basic ' . base64_encode(get_field( 'username', $site ) . ':' . get_field( 'password', $site )),
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['id' => $post_id]) );
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+    }
+
     public static function get_casinos_from_list( $casino_id = null ){
 
         $sites = [];
         $new_sites = [];
 
-        if( $lists = Casanova_List_Helper::get_lists() ){
+        if( $lists = Casanova_List_Helper::get_lists( ['number' => -1] ) ){
             foreach( $lists as $list ){
                 if( isset($list->order) && sizeof( $list->order ) )
                 $casinos = array_column( $list->order, 'list_order_item' );

@@ -41,7 +41,7 @@ function casanova_register_cpt_list(){
         'has_archive' => false,
         'hierarchical' => false,
         'menu_position' => null,
-        'supports' => array('title'),
+        'supports' => array('title', 'revisions'),
         'menu_icon' => 'dashicons-editor-ul',
     );
 

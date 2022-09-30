@@ -65,6 +65,7 @@ class Casanova{
 
         require CASANOVA_DIR . '/inc/misc/scripts.php';
         require CASANOVA_DIR . '/inc/misc/acf.php';
+        require CASANOVA_DIR . '/inc/misc/functions.php';
         require CASANOVA_DIR . '/inc/class-helper.php';
 
         require CASANOVA_DIR . '/inc/list/post-type.php';
