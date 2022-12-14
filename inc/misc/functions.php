@@ -44,17 +44,14 @@ function on_save_list_casino(){
     if( get_field( 'no_sync_global', 'options' ) || get_field( 'no_sync', $post_id ) )
     return false;
 
-    $dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
-    $dt->setTimestamp(time()); 
-
     if( get_post_type( $post_id ) == 'list' ){
         Casanova_List_Helper::update_lists_rest( $site, $post_id );
-        Casanova_List_Helper::update_history( $post_id, $dt->format('Y/m/d H:i:s') );
     }elseif( get_post_type( $post_id ) == 'casino' ){
         Casanova_Casino_Helper::update_casino_rest( $site, $post_id );
-        Casanova_Casino_Helper::update_history( $post_id, $dt->format('Y/m/d H:i:s') );
     }
     
+    $dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+    $dt->setTimestamp(time()); 
     update_field( 'last_sync' , $dt->format('Y/m/d H:i:s'), $post_id);
 
     wp_send_json_success( ['site' => $site, 'post_id' => $post_id ] );
@@ -85,6 +82,15 @@ function casanova_update_post(){
     }
 
     wp_update_post( $postarr );
+
+    $dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+    $dt->setTimestamp(time()); 
+
+    if( get_post_type( $post_id ) == 'list' ){
+        Casanova_List_Helper::update_history( $post_id, $dt->format('Y/m/d H:i:s') );
+    }elseif( get_post_type( $post_id ) == 'casino' ){
+        Casanova_Casino_Helper::update_history( $post_id, $dt->format('Y/m/d H:i:s') );
+    }
 
     wp_send_json_success( ['id' => $post_id, 'post' => $postarr] );
 
