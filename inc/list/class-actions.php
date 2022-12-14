@@ -10,7 +10,68 @@ class Casanova_List_Actions{
 	public function __construct(){
         add_action( 'manage_list_posts_custom_column' , [$this, 'admin_table_columns_data'], 10, 2 );
 		add_filter( 'manage_list_posts_columns', [$this, 'admin_table_columns'] );
+
+		add_action( 'add_meta_boxes', [$this, 'timeline_metabox'] );
 	}
+
+	/**
+     * Adds the meta box container for timeline
+	 * 
+	 * @since 1.1.0
+     */
+    public function timeline_metabox(){
+        add_meta_box( 
+            'list_timeline',
+			'Timeline',
+			array( $this, 'render_timeline_metabox' ),
+			'list',
+			'advanced',
+			'high'
+        );
+    }
+
+	/**
+     * Render Meta Box content for timeline
+	 * 
+	 * @since 1.1.0
+     */
+    public function render_timeline_metabox() {
+
+		if( $timeline = get_field( 'sync_history' ) ){
+        ?>
+        <div class="cc-timeline cc-timeline_list">
+			<?php 
+			foreach( array_reverse($timeline) as $key => $item ){ 
+			$item = $item['data'];
+			$data = json_decode($item, true);
+			?>
+			<div class="cc-timeline_item <?php echo $key == 0 ? 'current' : null ?>">
+				<p class="cc-timeline_item_time"><?php echo $data['date'] ?> by <i><?php echo $data['user'] ?></i></p>
+				<?php echo $key == 0 ? '<span class="badge">Latest Update</span>' : null ?>
+				<div class="cc-timeline_item_block cc-timeline_item_sites">
+					<b>Connected Sites:</b>
+					<div>
+						<?php foreach( $data['connected_sites'] as $site ){ ?>
+						<span><?php echo get_the_title($site) ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<div class="cc-timeline_item_block cc-timeline_item_casinos">
+					<b>Order:</b>
+					<div>
+						<?php foreach( $data['data'] as $time ){ ?>
+						<span><?php echo get_the_title($time['list_order_item']); ?></span>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+        </div>
+        <?php
+		}else{
+			echo 'No timeline for this List';
+		}
+    }
 
 	// Add the custom columns to the car post type:
 	public function admin_table_columns($columns) {

@@ -95,3 +95,68 @@
     max-height: 100%;
     overflow: visible;
 }
+
+/* History */
+#acf-group_639a150f5763a{
+    display: none !important;
+}
+
+.cc-timeline{
+}
+
+.cc-timeline_item{
+    position: relative;
+    padding-left: 40px;
+    padding-bottom: 30px;
+}
+
+.cc-timeline_item::before{
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: #f3f3f3;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.cc-timeline_item::after{
+    content: '';
+    width: 2px;
+    height: 100%;
+    background-color: #f3f3f3;
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
+.cc-timeline_item:last-child{
+    padding-bottom: 0;
+}
+.cc-timeline_item:last-child::after{
+    display: none;
+}
+
+.cc-timeline_item.current::before{
+    background-color: #8282e6;
+}
+#casino_timeline .inside,
+#list_timeline .inside{
+    margin: 15px 0 0;
+}
+.cc-timeline_item_time{
+    display: inline-block;
+    margin-top: 0;
+}
+
+.cc-timeline_item .badge{
+    padding: 5px 10px;
+    background-color: #b8ffb3;
+    color: #2e8b28;
+    font-weight: 600;
+    margin-left: 10px;
+    border-radius: 4px;
+}
+
+.cc-timeline_item_block{
+
+}

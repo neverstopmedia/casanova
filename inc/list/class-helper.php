@@ -24,6 +24,21 @@ class Casanova_List_Helper{
         
     }
 
+    public static function update_history( $post_id, $date ){
+
+        $data = get_field('list_order', $post_id);
+        add_row('sync_history', 
+        [
+            'data' => json_encode([
+                'data' => $data, 
+                'date' => $date,
+                'connected_sites' => get_field( 'connected_sites', $post_id ),
+                'user' => wp_get_current_user()->user_login
+            ])
+        ], $post_id);
+
+    }
+
     public static function update_lists_rest( $site, $post_id ){
 
         $ch = curl_init();

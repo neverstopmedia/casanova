@@ -14,6 +14,62 @@ class Casanova_Casino_Actions{
     public function __construct(){
 		add_action( 'acf/init', [$this, 'acf_casino_affiliate_links'] );
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
+
+		add_action( 'add_meta_boxes', [$this, 'timeline_metabox'] );
+
+    }
+
+	/**
+     * Adds the meta box container for timeline
+	 * 
+	 * @since 1.1.0
+     */
+    public function timeline_metabox(){
+        add_meta_box( 
+            'casino_timeline',
+			'Timeline',
+			array( $this, 'render_timeline_metabox' ),
+			'casino',
+			'advanced',
+			'high'
+        );
+    }
+
+    /**
+     * Render Meta Box content for timeline
+	 * 
+	 * @since 1.1.0
+     */
+    public function render_timeline_metabox() {
+
+		if( $timeline = get_field( 'sync_history' ) ){
+        ?>
+        <div class="cc-timeline cc-timeline_casino">
+			<?php 
+			foreach( array_reverse($timeline) as $key => $item ){ 
+			$item = $item['data'];
+			$data = json_decode($item, true);
+
+			?>
+			<div class="cc-timeline_item <?php echo $key == 0 ? 'current' : null ?>">
+				<p class="cc-timeline_item_time"><?php echo $data['date'] ?> by <i><?php echo $data['user'] ?></i></p>
+				<?php echo $key == 0 ? '<span class="badge">Latest Update</span>' : null ?>
+				<div class="cc-timeline_item_block cc-timeline_item_affiliates">
+					<b>Affiliate links</b>
+					<?php foreach( $data['data'] as $time ){ ?>
+					<div>
+						<span class="cc-timeline_item_site_id"><?php echo get_the_title($time['affiliate_site_id']); ?></span>
+						<span class="cc-timeline_item_aff_link"><?php echo $time['affiliate_link']; ?></span>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php } ?>
+        </div>
+        <?php
+		}else{
+			echo 'No timeline for this Casino';
+		}
     }
 
     /**

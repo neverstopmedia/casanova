@@ -23,6 +23,20 @@ class Casanova_Casino_Helper{
         return $casinos->get_casinos();
     }
 
+    public static function update_history( $post_id, $date ){
+
+        $data = get_field('casino_affiliate_links', $post_id);
+        add_row('sync_history', 
+        [
+            'data' => json_encode([
+                'data' => $data, 
+                'date' => $date,
+                'user' => wp_get_current_user()->user_login
+            ])
+        ], $post_id);
+
+    }
+
     public static function update_casino_rest( $site, $post_id ){
 
         $ch = curl_init();
