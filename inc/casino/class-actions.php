@@ -43,30 +43,7 @@ class Casanova_Casino_Actions{
     public function render_timeline_metabox() {
 
 		if( $timeline = get_field( 'sync_history' ) ){
-        ?>
-        <div class="cc-timeline cc-timeline_casino">
-			<?php 
-			foreach( array_reverse($timeline) as $key => $item ){ 
-			$item = $item['data'];
-			$data = json_decode($item, true);
-
-			?>
-			<div class="cc-timeline_item <?php echo $key == 0 ? 'current' : null ?>">
-				<p class="cc-timeline_item_time"><?php echo $data['date'] ?> by <i><?php echo $data['user'] ?></i></p>
-				<?php echo $key == 0 ? '<span class="badge">Latest Update</span>' : null ?>
-				<div class="cc-timeline_item_block cc-timeline_item_affiliates">
-					<b>Affiliate links</b>
-					<?php foreach( $data['data'] as $time ){ ?>
-					<div>
-						<span class="cc-timeline_item_site_id"><?php echo get_the_title($time['affiliate_site_id']); ?></span>
-						<span class="cc-timeline_item_aff_link"><?php echo $time['affiliate_link']; ?></span>
-					</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php } ?>
-        </div>
-        <?php
+			get_template_part( 'template-parts/timeline/casino', null, ['timeline' => $timeline] );
 		}else{
 			echo 'No timeline for this Casino';
 		}

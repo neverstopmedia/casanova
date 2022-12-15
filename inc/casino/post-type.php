@@ -41,7 +41,7 @@ function casanova_register_cpt_casino(){
         'has_archive' => true,
         'hierarchical' => true,
         'menu_position' => null,
-        'supports' => array('title', 'thumbnail', 'revisions'),
+        'supports' => array('title', 'thumbnail'),
         'menu_icon' => 'dashicons-games',
     );
 

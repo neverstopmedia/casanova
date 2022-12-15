@@ -38,36 +38,7 @@ class Casanova_List_Actions{
     public function render_timeline_metabox() {
 
 		if( $timeline = get_field( 'sync_history' ) ){
-        ?>
-        <div class="cc-timeline cc-timeline_list">
-			<?php 
-			foreach( array_reverse($timeline) as $key => $item ){ 
-			$item = $item['data'];
-			$data = json_decode($item, true);
-			?>
-			<div class="cc-timeline_item <?php echo $key == 0 ? 'current' : null ?>">
-				<p class="cc-timeline_item_time"><?php echo $data['date'] ?> by <i><?php echo $data['user'] ?></i></p>
-				<?php echo $key == 0 ? '<span class="badge">Latest Update</span>' : null ?>
-				<div class="cc-timeline_item_block cc-timeline_item_sites">
-					<b>Connected Sites:</b>
-					<div>
-						<?php foreach( $data['connected_sites'] as $site ){ ?>
-						<span><?php echo get_the_title($site) ?></span>
-						<?php } ?>
-					</div>
-				</div>
-				<div class="cc-timeline_item_block cc-timeline_item_casinos">
-					<b>Order:</b>
-					<div>
-						<?php foreach( $data['data'] as $time ){ ?>
-						<span><?php echo get_the_title($time['list_order_item']); ?></span>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-			<?php } ?>
-        </div>
-        <?php
+			get_template_part( 'template-parts/timeline/list', null, ['timeline' => $timeline] );
 		}else{
 			echo 'No timeline for this List';
 		}
