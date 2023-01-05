@@ -124,7 +124,18 @@ class Casanova_Casino_Actions{
 						'type'           => 'text',
 						'required'       => 1,
 						'wrapper' => array(
-							'width' => '45'
+							'width' => '20'
+						)
+					),
+					array (
+						'key'            => 'casino_affiliate_site_nickname_01',
+						'label'          => 'Nickname',
+						'name'           => 'affiliate_site_nickname',
+						'parent'         => 'casino_affiliates_01',
+						'type'           => 'text',
+						'required'       => 0,
+						'wrapper' => array(
+							'width' => '20'
 						)
 					),
 					array (
@@ -135,7 +146,7 @@ class Casanova_Casino_Actions{
 						'type'           => 'text',
 						'required'       => 1,
 						'wrapper' => array(
-							'width' => '45'
+							'width' => '50'
 						)
 					)
 				)
@@ -167,8 +178,21 @@ class Casanova_Casino_Actions{
 
 				$existing_sites = array_column( $value, 'casino_affiliate_site_id_01' );
 
+				// If the nickname is empty, lets fill it up
+				foreach( $value as $key => $site ){
+
+					if( !isset($value[$key]['casino_affiliate_site_nickname_01']) || empty( $value[$key]['casino_affiliate_site_nickname_01'] ) ){
+						
+						if( in_array( $site['casino_affiliate_site_id_01'], $existing_sites ) )
+						$value[$key]['casino_affiliate_site_nickname_01'] = get_field( 'nickname', $site['casino_affiliate_site_id_01'] );
+
+					}
+				}
+
 				if( sizeof( $existing_sites ) == sizeof($connected_sites) ){
+					
 					return $value;
+
 				}else{
 
 					foreach( $value as $key => $site ){
@@ -178,12 +202,13 @@ class Casanova_Casino_Actions{
 							$similar[] = $site['casino_affiliate_site_id_01'];
 						}
 					}
-
+					
 					foreach( array_diff( $connected_sites, $similar ) as $site ){
 						$value[] = array(
-							'casino_affiliate_site_id_01' => $site,
-							'casino_affiliate_site_01' => get_field( 'alias', $site ),
-							'casino_affiliate_link_01' => '',
+							'casino_affiliate_site_id_01' 		=> $site,
+							'casino_affiliate_site_01' 			=> get_field( 'alias', $site ),
+							'casino_affiliate_site_nickname_01' => get_field( 'nickname', $site ),
+							'casino_affiliate_link_01' 			=> '',
 						);
 					}
 
@@ -195,9 +220,10 @@ class Casanova_Casino_Actions{
 
 				foreach( $connected_sites as $site ){
 					$value[] = array(
-						'casino_affiliate_site_id_01' => $site,
-						'casino_affiliate_site_01' => get_field( 'alias', $site ),
-						'casino_affiliate_link_01' => '',
+						'casino_affiliate_site_id_01' 		=> $site,
+						'casino_affiliate_site_01' 			=> get_field( 'alias', $site ),
+						'casino_affiliate_site_nickname_01' => get_field( 'nickname', $site ),
+						'casino_affiliate_link_01' 			=> '',
 					);
 				}
 

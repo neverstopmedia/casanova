@@ -30,6 +30,7 @@ function casanova_disable_acf_fields( $field ) {
 }
 add_filter('acf/load_field/name=last_sync', 'casanova_disable_acf_fields');
 add_filter('acf/load_field/name=affiliate_site_id', 'casanova_disable_acf_fields');
+add_filter('acf/load_field/name=affiliate_site_nickname', 'casanova_disable_acf_fields');
 add_filter('acf/load_field/name=affiliate_site', 'casanova_disable_acf_fields');
 add_filter('acf/load_field/name=alias', 'casanova_disable_acf_fields');
 
