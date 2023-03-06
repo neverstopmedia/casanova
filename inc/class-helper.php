@@ -38,7 +38,7 @@ class Casanova_Helper{
      *
      * @since 1.0.0
      */
-    public static function get_tax_terms( $post_id = null, $tax ){
+    public static function get_tax_terms( $post_id, $tax ){
         if($post_id){
             $terms = get_the_terms( $post_id, $tax );
         }else{

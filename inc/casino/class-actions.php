@@ -16,7 +16,6 @@ class Casanova_Casino_Actions{
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
 
 		add_action( 'add_meta_boxes', [$this, 'timeline_metabox'] );
-
     }
 
 	/**
@@ -173,6 +172,7 @@ class Casanova_Casino_Actions{
 		if( $connected_sites = Casanova_Casino_Helper::get_casinos_from_list( $post_id ) ){
 
 			$sites = [];
+			$similar = [];
 
 			if( is_array($value) ){
 
@@ -217,6 +217,8 @@ class Casanova_Casino_Actions{
 				}
 
 			}else{
+
+				$value = [];
 
 				foreach( $connected_sites as $site ){
 					$value[] = array(

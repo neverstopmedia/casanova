@@ -60,7 +60,9 @@
 .casanova-sites-list li.success{
     color: #51b751;
 }
-
+.d-flex{
+    display: flex;
+}
 .d-block{
     display: block;
 }
@@ -69,6 +71,30 @@
 }
 .bg-success{
     background-color: #6ec36e;
+}
+.ml-40{
+    margin-left: 40px;
+}
+.f-600{
+    flex: 0 0 600px;
+}
+.f-1{
+    flex: 1;
+}
+
+.demo-preview{
+    width: 100%;
+    height: 800px;
+    padding: 0;
+    overflow: hidden;
+}
+.demo-preview iframe{
+    width: 870px;
+    height: 100%;
+    border: 0;
+    transform: scale(0.75);
+    transform-origin: 0 0;
+    border-radius: 40px;
 }
 .casanova-dot{
     width: 20px;

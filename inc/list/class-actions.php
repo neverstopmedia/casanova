@@ -12,6 +12,35 @@ class Casanova_List_Actions{
 		add_filter( 'manage_list_posts_columns', [$this, 'admin_table_columns'] );
 
 		add_action( 'add_meta_boxes', [$this, 'timeline_metabox'] );
+
+		add_filter('acf/load_field/key=field_6401e5203b058', [$this, 'acf_list_excluded_sites'], 10 );
+
+	}
+
+	/**
+     * Adds excluded sites to dropdown.
+	 * 
+	 * @since 1.1.5
+     */
+	public function acf_list_excluded_sites( $field ){
+		
+		$field['choices'] = [];
+
+		$args = array(
+			'post_type' => 'site',
+			'posts_per_page' => -1,
+			'post_status' => 'publish'
+		);
+
+		if( $posts = get_posts( $args ) ){
+			foreach( $posts as $post ){
+
+            	$field['choices'][get_field( 'url', $post->ID )] = get_the_title( $post->ID );
+			}
+		}
+
+		return $field;
+
 	}
 
 	/**
@@ -42,6 +71,7 @@ class Casanova_List_Actions{
 		}else{
 			echo 'No timeline for this List';
 		}
+		
     }
 
 	// Add the custom columns to the car post type:
