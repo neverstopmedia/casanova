@@ -62,7 +62,7 @@ class Casanova_Casino_Helper{
 
         if( $lists = Casanova_List_Helper::get_lists( ['number' => -1] ) ){
             foreach( $lists as $list ){
-                if( isset($list->order) && sizeof( $list->order ) )
+                if( isset($list->order) && is_array( $list->order ) && sizeof( $list->order ) )
                 $casinos = array_column( $list->order, 'list_order_item' );
 
                 if( !in_array( $casino_id, $casinos ) )
