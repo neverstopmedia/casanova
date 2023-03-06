@@ -4,7 +4,7 @@ jQuery( document ).ready( function( $ ) {
         $(this).toggleClass('open');
     });
 
-    $("#demo-site-select").on('click', function(){
+    $("#demo-site-select").on('change', function(){
         $(".demo-preview iframe").attr('src', $(this).val());
     })
     
