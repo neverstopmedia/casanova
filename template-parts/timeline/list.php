@@ -42,6 +42,11 @@
     <?php if( $connected_sites = get_field( 'connected_sites' ) ){ ?>
     <div class="ml-40 f-1">
         <p>This is a demo from one of the connected sites.</p>
+        <select id="demo-site-select">
+            <?php foreach( $connected_sites as $site ){ ?>
+            <option value="<?php echo get_field( 'url', $site ) ?>"><?php echo get_the_title($site) ?></option>
+            <?php } ?>
+        </select>
         <div class="demo-preview">
             <iframe src="<?php echo get_field( 'url', $connected_sites[0] ) ?>"></iframe>
         </div>
