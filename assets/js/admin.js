@@ -6,6 +6,6 @@ jQuery( document ).ready( function( $ ) {
 
     $("#demo-site-select").on('change', function(){
         $(".demo-preview iframe").attr('src', $(this).val());
-    })
+    });
     
 } );
