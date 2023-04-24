@@ -38,6 +38,11 @@ class Casanova_Casino_Actions{
 			$links = get_field( 'casino_affiliate_links', $post_id );
 			$links = is_array($links) ? array_column( $links, 'affiliate_link' ) : null;
 
+			if( $links == null ){
+				echo 'No links available';
+				break;
+			}
+
 			$links = array_filter( $links, function( $link ){
 				return empty($link);
 			} );
@@ -46,7 +51,6 @@ class Casanova_Casino_Actions{
 			$class = $links > 0 ? "tc-danger" : 'tc-success';
 
 			echo '<span class="fw-600 '.$class.'">' . $links . ' sites are missing links</span>';
-
 			break;
 
 		}
