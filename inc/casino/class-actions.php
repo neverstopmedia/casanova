@@ -16,7 +16,41 @@ class Casanova_Casino_Actions{
 		add_filter('acf/load_value/name=casino_affiliate_links', [$this, 'acf_casino_default_links'], 10, 3);
 
 		add_action( 'add_meta_boxes', [$this, 'timeline_metabox'] );
+
+		add_action( 'manage_casino_posts_custom_column' , [$this, 'admin_table_columns_data'], 10, 2 );
+		add_filter( 'manage_casino_posts_columns', [$this, 'admin_table_columns'] );
     }
+
+	// Add the custom columns to the car post type:
+	public function admin_table_columns($columns) {
+		$columns['missing_links'] = __( 'Missing Links', 'casanova' );
+
+		return $columns;
+	}
+
+	// Add the data to the custom columns for the car post type:
+	public function admin_table_columns_data( $column, $post_id ) {
+
+		switch ( $column ) {
+
+            case 'missing_links':
+
+			$links = get_field( 'casino_affiliate_links', $post_id );
+			$links = is_array($links) ? array_column( $links, 'affiliate_link' ) : null;
+
+			$links = array_filter( $links, function( $link ){
+				return empty($link);
+			} );
+			
+			$links = $links ? count($links) : 0;
+			$class = $links > 0 ? "tc-danger" : 'tc-success';
+
+			echo '<span class="fw-600 '.$class.'">' . $links . ' sites are missing links</span>';
+
+			break;
+
+		}
+	}
 
 	/**
      * Adds the meta box container for timeline

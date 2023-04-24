@@ -72,6 +72,12 @@
 .bg-success{
     background-color: #6ec36e;
 }
+.tc-danger{
+    color: #ef7272;
+}
+.tc-success{
+    color: #6ec36e;
+}
 .ml-40{
     margin-left: 40px;
 }
@@ -80,6 +86,9 @@
 }
 .f-1{
     flex: 1;
+}
+.fw-600{
+    font-weight: 600;
 }
 
 .demo-preview{
