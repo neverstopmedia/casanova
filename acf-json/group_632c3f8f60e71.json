@@ -195,6 +195,73 @@
             "endpoint": 0
         },
         {
+            "key": "field_6454d84493e1c",
+            "label": "Casino Labels",
+            "name": "casino_labels",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add Label",
+            "sub_fields": [
+                {
+                    "key": "field_6454d85993e1d",
+                    "label": "Label",
+                    "name": "label_text",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_6454d86693e1e",
+                    "label": "Label Color",
+                    "name": "label_color",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "red": "Red",
+                        "orange": "Orange",
+                        "green": "Green",
+                        "grey": "Grey"
+                    },
+                    "default_value": "orange",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "return_format": "value",
+                    "placeholder": ""
+                }
+            ]
+        },
+        {
             "key": "field_632c4028b46aa",
             "label": "Casino Background Color",
             "name": "casino_color",
@@ -494,5 +561,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1664171961
+    "modified": 1683282075
 }

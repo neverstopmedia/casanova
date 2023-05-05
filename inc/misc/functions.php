@@ -54,7 +54,7 @@ function on_save_list_casino(){
     $dt->setTimestamp(time()); 
     update_field( 'last_sync' , $dt->format('Y/m/d H:i:s'), $post_id);
 
-    wp_send_json_success( ['site' => $site, 'post_id' => $post_id ] );
+    wp_send_json_success( ['site' => $site, 'post_id' => $post_id, 'post_type' => get_post_type( $post_id ) ] );
 
 }
 add_action( 'wp_ajax_on_save_list_casino', 'on_save_list_casino' );

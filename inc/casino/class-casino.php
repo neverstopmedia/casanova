@@ -168,6 +168,8 @@ class Casanova_Casino{
 
         $this->affiliates = get_field( 'casino_affiliate_links', $casino_id );
 
+        $this->casino_labels = get_field( 'casino_labels', $casino_id );
+
     }
     
 }
