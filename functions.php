@@ -27,7 +27,7 @@ class Casanova{
     private function define_constants(){
         define( 'CASANOVA_DIR', get_template_directory() );
         define( 'CASANOVA_URI', get_template_directory_uri() );
-        define( 'CASANOVA_VERSION', '1.2.2' );
+        define( 'CASANOVA_VERSION', '1.2.3' );
         define( 'CASANOVA_API_ROUTE', 'casanova/v1' );
     }
 
@@ -106,7 +106,7 @@ $update_checker = Puc_v4_Factory::buildUpdateChecker(
     __FILE__,
     get_template()
 );
-$update_checker->setAuthentication('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');
+$update_checker->setAuthentication('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');
 $update_checker->setBranch('main');
 
 if(is_admin() && strpos($_SERVER['PHP_SELF'], 'themes.php') !== false){

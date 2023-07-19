@@ -64,6 +64,8 @@ class Casanova_Casino{
     public $casino_color;
     
     public $game_forms;
+
+    public $license;
     
     public $release_year;
     
@@ -143,6 +145,8 @@ class Casanova_Casino{
         $this->casino_color = get_field( 'casino_color', $casino_id );
 
         $this->game_forms = get_field( 'game_forms', $casino_id );
+
+        $this->license = get_field( 'license', $casino_id );
 
         $this->release_year = get_field( 'release_year', $casino_id );
 
