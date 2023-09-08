@@ -27,7 +27,7 @@ class Casanova{
     private function define_constants(){
         define( 'CASANOVA_DIR', get_template_directory() );
         define( 'CASANOVA_URI', get_template_directory_uri() );
-        define( 'CASANOVA_VERSION', '1.2.3' );
+        define( 'CASANOVA_VERSION', '1.2.4' );
         define( 'CASANOVA_API_ROUTE', 'casanova/v1' );
     }
 
@@ -43,6 +43,8 @@ class Casanova{
             self::$_instance = new self();
 
 			self::$_instance->includes();
+
+            new Casanova_Actions;
 
             new Casanova_Casino_Endpoints;
             new Casanova_List_Endpoints;
@@ -66,6 +68,7 @@ class Casanova{
         require CASANOVA_DIR . '/inc/misc/acf.php';
         require CASANOVA_DIR . '/inc/misc/functions.php';
         require CASANOVA_DIR . '/inc/class-helper.php';
+        require CASANOVA_DIR . '/inc/class-actions.php';
 
         require CASANOVA_DIR . '/inc/list/post-type.php';
         require CASANOVA_DIR . '/inc/list/class-actions.php';

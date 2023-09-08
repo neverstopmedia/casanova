@@ -9,6 +9,10 @@
     margin-right: 10px;
 }
 
+.casanova-user-4 #postdivrich{
+    display: none;
+}
+
 .casanova-popup{
     position: fixed;
     top: 50%;
