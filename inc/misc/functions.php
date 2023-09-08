@@ -6,10 +6,7 @@ $post_id = isset( $post->ID ) && $post->ID ? $post->ID : null;
 
 <div class="casanova-popup">
 
-    <div class="casanova-sites-list">
-        <h1>Sync Status</h1>
-        <ul></ul>
-    </div>
+    <div class="casanova-sites-list"></div>
     <?php 
     if( $post_id && $post->post_type == 'casino' ){ 
     $casino_sites = Casanova_Casino_Helper::get_casinos_from_list($post_id);
@@ -80,6 +77,9 @@ function casanova_update_post(){
             update_field( $key, $val, $postarr['post_ID'] );
         }
     }
+
+    if( isset($postarr['content']) )
+    $postarr['post_content'] = $postarr['content'];
 
     wp_update_post( $postarr );
 

@@ -20,9 +20,9 @@ jQuery( document ).ready( function( $ ) {
         let $form = $(this),
         completedSites = 0,
         isCasino = $("#casino-sites").length;
-
-        
+  
         let connectedSites = isCasino ? getCasinoSiteIds() : $("#acf-field_632c65da476cc").val();
+
         if( connectedSites.length == 0 )
         return true;
 
@@ -33,6 +33,7 @@ jQuery( document ).ready( function( $ ) {
         return true;
 
         $("body").addClass('casanova-submit');
+        $(".casanova-sites-list").html('<h1>Sync Status</h1><ul></ul>');
         $(".casanova-sites-list ul").prepend('<li class="post-update loading">Updating Post <span>In Progress...</span></li>');
 
         $.ajax({
@@ -71,7 +72,12 @@ jQuery( document ).ready( function( $ ) {
 
                         if( completedSites, completedSites == (connectedSites.length - 1) ){
                             flag = true;
-                            location.reload();
+                            $(".casanova-sites-list").html('<h1 style="text-align: center; margin-bottom: 0;">All Done!</h1>')
+                            setTimeout( function(){
+                                $("body").removeClass('casanova-submit');
+                                flag = false;
+                            }, 2000);
+
                         }
 
                         let siteElement = $(".casanova-sites-list").find("[data-site='" + response.data.site + "']");
