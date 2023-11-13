@@ -60,6 +60,7 @@ class Casanova_Casino_Query{
 			'children'          	=> false,
 			'fields'            	=> null,
 			'post__in'          	=> null,
+            'application_domains'   => null,
 		);
 
 		// We need to store an array of the args used to instantiate the class, so that we can use it in later hooks.
@@ -130,6 +131,7 @@ class Casanova_Casino_Query{
 		$this->search();
 		$this->children();
 		$this->post__in();
+        $this->application_domains();
 
 		$query = new WP_Query( $this->args );
 
@@ -266,6 +268,25 @@ class Casanova_Casino_Query{
 			$this->__set( 'post_parent', 0 );
 		}
 		$this->__unset( 'children' );
+	}
+
+    /**
+	 * Application Domains
+	 *
+	 * @since 2.0.0
+	 * @return void
+	 */
+	private function application_domains(){
+		if ( empty( $this->args['application_domains'] ) ) {
+			return;
+		}
+
+		$this->__set( 'meta_query', array(
+			'key'   => 'application_domains',
+			'compare' => 'EXISTS',
+		) );
+		$this->__unset( 'application_domains' );
+
 	}
 
 	/**

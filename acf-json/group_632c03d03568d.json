@@ -20,6 +20,25 @@
             "ui": 1,
             "ui_on_text": "",
             "ui_off_text": ""
+        },
+        {
+            "key": "field_6551d55ca36e5",
+            "label": "Last App Domain Check",
+            "name": "last_app_domain_check",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -44,5 +63,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1664171942
+    "modified": 1699861862
 }

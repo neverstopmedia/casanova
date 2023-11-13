@@ -17,7 +17,7 @@ class Casanova_Actions{
 
 	public function add_user_id_class( $classes ){
 
-       $classes .= ' casanova-user-'.get_current_user_id();
+        $classes .= ' casanova-user-'.get_current_user_id();
 
         return $classes;
     }

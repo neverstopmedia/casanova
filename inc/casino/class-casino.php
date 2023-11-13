@@ -91,6 +91,7 @@ class Casanova_Casino{
 
     public $affiliates;
     
+    public $apk_link;
     
     /**
      * Class constructor.
@@ -171,6 +172,8 @@ class Casanova_Casino{
         $this->withdrawal_time = get_field( 'withdrawal_time', $casino_id );
 
         $this->affiliates = get_field( 'casino_affiliate_links', $casino_id );
+
+        $this->apk_link = get_field( 'apk_link', $casino_id );
 
         $this->casino_labels = get_field( 'casino_labels', $casino_id );
 

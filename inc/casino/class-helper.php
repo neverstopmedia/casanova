@@ -87,4 +87,87 @@ class Casanova_Casino_Helper{
 
     }
 
+    // Let's check the filter status of the domain
+    public static function check_domain_status( $domain ){
+
+        $status = null;
+
+        /* 
+        *  This accepts the domain name as parameter, and will return a request_id 
+        *  which will be used in the second call.
+        */
+        $check_1_url = 'https://check-host.net/check-ping?host='.$domain["application_domain"].'/max_nodes=1&node=ir1.node.check-host.net';
+
+        // Initialize cURL session
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $check_1_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']); // Set the Accept header
+
+        $response = curl_exec($ch);
+
+        // Check for cURL errors
+        if (curl_errno($ch)) {
+            echo 'Curl error: ' . curl_error($ch);
+        }else{
+
+            $response = json_decode($response);
+            if( isset($response->error) || $response->ok != 1 ){
+                return null;
+            }
+
+            // Let's sleep so we can wait for the results
+            sleep(15);
+
+            // Let's go for the second call
+            $check_2_url = 'https://check-host.net/check-result/'.$response->request_id;
+
+            $ch_2 = curl_init();
+
+            curl_setopt($ch_2, CURLOPT_URL, $check_2_url);
+            curl_setopt($ch_2, CURLOPT_RETURNTRANSFER, 1); 
+            curl_setopt($ch_2, CURLOPT_HTTPHEADER, ['Accept: application/json']); // Set the Accept header
+
+            $filter_response = curl_exec($ch_2);
+
+            if(curl_errno($ch_2)) {
+                echo 'Curl error: ' . curl_error($ch_2);
+            }
+
+            $status = json_decode($filter_response, true);
+
+            // Close the second cURL session
+            curl_close($ch_2);
+
+        }
+
+        // Close the first cURL session
+        curl_close($ch);
+
+        return $status;
+
+    }
+
+    // Check if the last time we ran a check on app domains is greater than 24 hours
+    public static function last_domain_check_run(){
+
+        $last_app_check = get_field( 'last_app_domain_check', 'option' );
+
+        $dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+        $dt->setTimestamp(time()); 
+        $today = $dt->format('Y/m/d H:i:s');
+        $time_difference = strtotime($today) - strtotime($last_app_check);
+
+        if( empty( $last_app_check ) || $time_difference > 86400 ){
+
+            update_field( 'last_app_domain_check', $today, 'option' );
+            return true;
+
+        }
+
+        return false;
+        
+    }
+
 }

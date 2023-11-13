@@ -19,6 +19,117 @@ class Casanova_Casino_Actions{
 
 		add_action( 'manage_casino_posts_custom_column' , [$this, 'admin_table_columns_data'], 10, 2 );
 		add_filter( 'manage_casino_posts_columns', [$this, 'admin_table_columns'] );
+
+        add_action( 'wp_ajax_get_casinos_with_apps', [ $this, 'get_casinos_with_apps' ] );
+        add_action( 'wp_ajax_get_casino_apps', [ $this, 'get_casino_apps' ] );
+        add_action( 'wp_ajax_check_and_update_domain', [ $this, 'check_and_update_domain' ] );
+
+        add_action( 'wp_ajax_nopriv_get_casinos_with_apps', [ $this, 'get_casinos_with_apps' ] );
+        add_action( 'wp_ajax_nopriv_get_casino_apps', [ $this, 'get_casino_apps' ] );
+        add_action( 'wp_ajax_nopriv_check_and_update_domain', [ $this, 'check_and_update_domain' ] );
+
+    }
+
+    public function get_casinos_with_apps(){
+
+        // Check timer > 24 hours
+        if( !Casanova_Casino_Helper::last_domain_check_run() )
+        wp_send_json_error( array( 'message' => 'Its been less than 24 hours since the last domain check, exiting.' ) );
+
+        // Only get the casinos that have a valid APK link
+        if( $casinos = Casanova_Casino_Helper::get_casinos( [ 'application_domains' => true, 'number' => -1 ] ) ){
+
+            wp_send_json_success( array( 'message' => 'Casinos found', 'casinos' => $casinos ) );
+
+        }
+
+        wp_send_json_error( array( 'message' => 'No casinos that contain application APKs' ) );
+
+    }
+
+    // This function will update the application domains when they get flagged
+    public function get_casino_apps(){
+
+        $casino_id = isset($_POST['casino_id']) ? $_POST['casino_id'] : null;
+
+        if( empty($casino_id) ){
+            wp_send_json_error( array( 'message' => 'No proper casino ID provided' ) );
+        }
+        
+        if( $app_domains = get_field( 'application_domains', $casino_id ) ){
+
+            // This will be used to update the affiliate link with this domain
+            $domain_list = [];
+
+            foreach( $app_domains as $domain ){
+
+                // If the domain is already filtered, lets continue to the next domain.
+                if( $domain['application_domain_status'] == 'filtered' ){
+                    continue;
+                }
+
+                $domain_list[] = $domain;
+
+            }
+
+            wp_send_json_success( array( 'message' => 'Latest domain checked', 'domain_list' => $domain_list ) );
+        }else{
+            wp_send_json_error( array( 'message' => 'No domains set for the casino application' ) );
+        }
+
+    }
+
+    // This function checks the filter status, and updates accordingly
+    public function check_and_update_domain(){
+
+        $domain         = isset($_POST['domain']) ? $_POST['domain'] : null;
+        $casino_id      = isset($_POST['casino_id']) ? $_POST['casino_id'] : null;
+
+        if( empty($domain) ){
+            wp_send_json_error( array( 'message' => 'Invalid domain' ) );
+        }
+
+        $app_domains    = get_field( 'application_domains', $casino_id );
+        $filter_status  = Casanova_Casino_Helper::check_domain_status( $domain );
+
+        // Current index of the domain we are checking
+        $index = array_search( $domain['application_domain'], array_column( $app_domains, 'application_domain' ) );
+
+        // Let's update the time for last checked for the domain
+        $dt = new DateTime("now", new DateTimeZone('Asia/Dubai'));
+        $dt->setTimestamp(time()); 
+        $app_domains[$index]['last_checked'] = $dt->format('Y/m/d H:i:s');
+
+        if( isset($filter_status['ir1.node.check-host.net'][0][0][0]) 
+        && $filter_status['ir1.node.check-host.net'][0][0][0] == 'OK' ){
+
+            // LETS UPDATE THE THIRSTY AFFILIATE LINK USING THE ID FIELD IN THE CASINO
+            update_post_meta( get_field( 'app_tf_cloaked_id', $casino_id ) , '_ta_destination_url', $domain['application_domain'] );
+            update_field('application_domains', $app_domains, $casino_id);
+
+            wp_send_json_success( [ 
+                'domain'    => $domain['application_domain'], 
+                'continue'  => false, 
+                'casino_id' => $casino_id, 
+                'index'     => $index 
+            ] );
+
+        }else{
+
+            // Let's set the domain as filtered with update_field, and then proceed
+            $app_domains[$index]['application_domain_status'] = 'filtered';
+            update_field('application_domains', $app_domains, $casino_id);
+
+            wp_send_json_success( [ 
+                'domain'    => $domain['application_domain'], 
+                'continue'  => true, 
+                'casino_id' => $casino_id, 
+                'index'     => $index 
+            ] );
+
+        }
+
+
     }
 
 	// Add the custom columns to the car post type:
@@ -196,7 +307,6 @@ class Casanova_Casino_Actions{
 			'fields' => $fields,
 			'location' => $location,
 		));
-
 		
 	}
 

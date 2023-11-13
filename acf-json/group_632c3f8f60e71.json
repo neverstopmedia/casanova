@@ -542,6 +542,141 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_654dc9fcbb865",
+            "label": "Application",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_654dca08bb866",
+            "label": "Application APK Link",
+            "name": "apk_link",
+            "type": "text",
+            "instructions": "Insert the link of the application's apk file.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_654dd27c40265",
+            "label": "Application Thirsty Affiliate Cloaked URL ID",
+            "name": "app_tf_cloaked_id",
+            "type": "text",
+            "instructions": "This is the thirsty affiliate post ID that belongs to this app.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_654dca12bb867",
+            "label": "Application Domains",
+            "name": "application_domains",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "",
+            "sub_fields": [
+                {
+                    "key": "field_654dca23bb868",
+                    "label": "Application Domain",
+                    "name": "application_domain",
+                    "type": "url",
+                    "instructions": "The domain that will be checked for filters every x days",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_654dca90bb869",
+                    "label": "Status",
+                    "name": "application_domain_status",
+                    "type": "select",
+                    "instructions": "This shows whether the domain is filtered or not",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "unfiltered": "Unfiltered",
+                        "filtered": "Filtered"
+                    },
+                    "default_value": false,
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "return_format": "value",
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_654dcf653c7b5",
+                    "label": "Last Checked",
+                    "name": "last_checked",
+                    "type": "text",
+                    "instructions": "When was this last checked",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
         }
     ],
     "location": [
@@ -561,5 +696,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1683282075
+    "modified": 1699599027
 }
