@@ -23,7 +23,7 @@ jQuery( document ).ready( function( $ ) {
 
             let casinos = response.data.casinos;
 
-            casinos.forEach( (casino, index) => {
+            for( let casinoIndex = 0; casinoIndex < casinos.length; casinoIndex++ ){
 
                 // Let's update each casino on its own
                 $.ajax({
@@ -31,20 +31,21 @@ jQuery( document ).ready( function( $ ) {
                     url: ajaxurl,
                     data: {
                         action: 'get_casino_apps',
-                        casino_id: casino.ID
+                        casino_id: casinos[casinoIndex].ID
                     }
                 }).done(function(response){
 
                     // Let's start by checking domains for every casino
                     if( response.success == true ){
 
-                        let domainList = response.data.domain_list;
+                        let domainList = response.data.domain_list,
+                        timer = 0;
 
-                        for( let index = 0; index < domainList.length; index++ ){
+                        for( let domainIndex = 0; domainIndex < domainList.length; domainIndex++ ){
 
-                            let domain = domainList[index];
+                            let domain = domainList[domainIndex];
 
-                            setTimeout( function(){
+                            timer = setTimeout( function(){
 
                                 $.ajax({
                                     type: 'POST',
@@ -52,7 +53,7 @@ jQuery( document ).ready( function( $ ) {
                                     data: {
                                         action: 'check_and_update_domain',
                                         domain: domain,
-                                        casino_id: casino.ID
+                                        casino_id: casinos[casinoIndex].ID
                                     }
                                 }).done(function(response){
 
@@ -62,13 +63,14 @@ jQuery( document ).ready( function( $ ) {
                                     // can now exit the loop and the function entirely.
                                     if( response.success == true && response.data.continue == false ){
 
-                                        console.log('done');
-
+                                        clearTimeout(timer);
+                                        return;
+                                        
                                     }
 
                                 });
 
-                            }, index * 15000);
+                            }, ( casinoIndex + domainIndex ) * 10000);
 
                         }
 
@@ -76,7 +78,7 @@ jQuery( document ).ready( function( $ ) {
 
                 });
                 
-            });
+            }
 
         }
 
