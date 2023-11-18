@@ -13,6 +13,8 @@ class Casanova_Actions{
         add_action('admin_footer-casino-new.php', [$this, 'disable_browser_autosave']);
         add_action('admin_footer-list.php', [$this, 'disable_browser_autosave']);
         add_action('admin_footer-list-new.php', [$this, 'disable_browser_autosave']);
+
+        add_action('admin_menu', array($this, 'admin_menus'));
 	}
 
 	public function add_user_id_class( $classes ){
@@ -29,5 +31,40 @@ class Casanova_Actions{
             echo '<input type="hidden" name="autosave" id="autosave" value="off">';
         }
     }
-   
+
+    /**
+    * Create the admin back-end menus.
+    *
+    * @since 1.0.0
+    */
+    public function admin_menus(){
+
+        //Main Dashboard Page
+        add_menu_page( '',  'Casanova',  'manage_options',  'casanova-dashboard', array( $this, 'dashboard__content' ) , 'dashicons-clock', 100 );
+        add_submenu_page( 'casanova-dashboard', 'Casanova', esc_html__('Dashboard', 'casanova'), 'manage_options', 'casanova-dashboard', array( $this, 'dashboard__content' ) );
+        
+        // Logs
+        add_submenu_page( 'casanova-dashboard', esc_html__('Logs', 'casanova'), esc_html__('Logs', 'casanova'), 'manage_options', 'casanova-logs', array( $this, 'dashboard__content' ) );
+        
+    }
+
+    /**
+    * Populate the content for each admin menu page.
+    *
+    * @since 1.0.0
+    */
+    public function dashboard__content(){
+
+        $current_page = isset($_GET['page']) ? $_GET['page'] : '';
+
+        include CASANOVA_DIR. '/template-parts/views/partial-tabs.php';
+
+        /* Page Content */
+        include CASANOVA_DIR . '/template-parts/views/page-' . str_replace('casanova-', '', $current_page ) .'.php';
+
+        /* Footer */
+        include CASANOVA_DIR . '/template-parts/views/partial-footer.php';
+
+    }
+    
 }

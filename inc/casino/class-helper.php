@@ -96,7 +96,7 @@ class Casanova_Casino_Helper{
         *  This accepts the domain name as parameter, and will return a request_id 
         *  which will be used in the second call.
         */
-        $check_1_url = 'https://check-host.net/check-ping?host='.$domain["application_domain"].'/max_nodes=1&node=ir1.node.check-host.net';
+        $check_1_url = 'https://check-host.net/check-ping?host='.$domain["application_domain"].'/max_nodes=1&node=ir5.node.check-host.net';
 
         // Initialize cURL session
         $ch = curl_init();

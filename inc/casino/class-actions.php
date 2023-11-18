@@ -32,14 +32,10 @@ class Casanova_Casino_Actions{
 
     public function get_casinos_with_apps(){
 
-        // Check timer > 24 hours
-        if( !Casanova_Casino_Helper::last_domain_check_run() )
-        wp_send_json_error( array( 'message' => 'Its been less than 24 hours since the last domain check, exiting.' ) );
-
         // Only get the casinos that have a valid APK link
         if( $casinos = Casanova_Casino_Helper::get_casinos( [ 'application_domains' => true, 'number' => -1 ] ) ){
 
-            wp_send_json_success( array( 'message' => 'Casinos found', 'casinos' => $casinos ) );
+            wp_send_json_success( array( 'message' => count($casinos) . ' casinos found that have an APK link, starting now', 'casinos' => $casinos ) );
 
         }
 
@@ -72,9 +68,12 @@ class Casanova_Casino_Actions{
 
             }
 
-            wp_send_json_success( array( 'message' => 'Latest domain checked', 'domain_list' => $domain_list ) );
+            wp_send_json_success( array( 
+                'message' => 'Processing '. count($domain_list) . ' domains for ' . get_the_title($casino_id), 
+                'domain_list' => $domain_list 
+            ) );
         }else{
-            wp_send_json_error( array( 'message' => 'No domains set for the casino application' ) );
+            wp_send_json_error( array( 'message' => 'No domains set for the casino application.' ) );
         }
 
     }
@@ -100,14 +99,15 @@ class Casanova_Casino_Actions{
         $dt->setTimestamp(time()); 
         $app_domains[$index]['last_checked'] = $dt->format('Y/m/d H:i:s');
 
-        if( isset($filter_status['ir1.node.check-host.net'][0][0][0]) 
-        && $filter_status['ir1.node.check-host.net'][0][0][0] == 'OK' ){
+        if( isset($filter_status['ir5.node.check-host.net'][0][0][0]) 
+        && $filter_status['ir5.node.check-host.net'][0][0][0] == 'OK' ){
 
             // LETS UPDATE THE THIRSTY AFFILIATE LINK USING THE ID FIELD IN THE CASINO
             update_post_meta( get_field( 'app_tf_cloaked_id', $casino_id ) , '_ta_destination_url', $domain['application_domain'] );
             update_field('application_domains', $app_domains, $casino_id);
 
             wp_send_json_success( [ 
+                'message'   => $domain['application_domain'] . ' is not filtered',
                 'domain'    => $domain['application_domain'], 
                 'continue'  => false, 
                 'casino_id' => $casino_id, 
@@ -121,6 +121,7 @@ class Casanova_Casino_Actions{
             update_field('application_domains', $app_domains, $casino_id);
 
             wp_send_json_success( [ 
+                'message'   => $domain['application_domain'] . ' is filtered',
                 'domain'    => $domain['application_domain'], 
                 'continue'  => true, 
                 'casino_id' => $casino_id, 
