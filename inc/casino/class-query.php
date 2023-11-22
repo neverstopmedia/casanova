@@ -281,10 +281,17 @@ class Casanova_Casino_Query{
 			return;
 		}
 
-		$this->__set( 'meta_query', array(
-			'key'   => 'application_domains',
-			'compare' => 'EXISTS',
-		) );
+		$this->__set( 'meta_query', [
+            array(
+                'key'   => 'application_domains',
+                'compare' => 'EXISTS',
+            ),
+            array(
+                'key'     => 'application_domains',
+                'value'   => '',
+                'compare' => '!=',
+            )
+        ] );
 		$this->__unset( 'application_domains' );
 
 	}
