@@ -24,7 +24,7 @@ jQuery( document ).ready( function( $ ) {
             }
         }).done(function(response){
             
-            $(".upload_status").append(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Initial Check:</b> ${response.data.message}</p>`);
+            $(".upload_status").prepend(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Initial Check:</b> ${response.data.message}</p>`);
 
             if( response.success == true ){
     
@@ -42,7 +42,7 @@ jQuery( document ).ready( function( $ ) {
                         }
                     }).done(function(response){
 
-                        $(".upload_status").append(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Domain Check:</b> ${response.data.message}</p>`);
+                        $(".upload_status").prepend(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Domain Check:</b> ${response.data.message}</p>`);
     
                         // Let's start by checking domains for every casino
                         if( response.success == true ){
@@ -66,7 +66,7 @@ jQuery( document ).ready( function( $ ) {
                                         }
                                     }).done(function(response){
     
-                                        $(".upload_status").append(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Casino Apps:</b> ${response.data.message}</p>`);
+                                        $(".upload_status").prepend(`<p class="${response.success == true ? 'success' : 'fail'}"> <b>Casino Apps:</b> ${response.data.message}</p>`);
     
                                         // If response.continue is false, this means we found the domain that is not filtered, and we
                                         // can now exit the loop and the function entirely.

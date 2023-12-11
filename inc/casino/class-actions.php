@@ -24,10 +24,6 @@ class Casanova_Casino_Actions{
         add_action( 'wp_ajax_get_casino_apps', [ $this, 'get_casino_apps' ] );
         add_action( 'wp_ajax_check_and_update_domain', [ $this, 'check_and_update_domain' ] );
 
-        add_action( 'wp_ajax_nopriv_get_casinos_with_apps', [ $this, 'get_casinos_with_apps' ] );
-        add_action( 'wp_ajax_nopriv_get_casino_apps', [ $this, 'get_casino_apps' ] );
-        add_action( 'wp_ajax_nopriv_check_and_update_domain', [ $this, 'check_and_update_domain' ] );
-
     }
 
     public function get_casinos_with_apps(){
@@ -107,7 +103,7 @@ class Casanova_Casino_Actions{
             update_field('application_domains', $app_domains, $casino_id);
 
             wp_send_json_success( [ 
-                'message'   => $domain['application_domain'] . ' is not filtered',
+                'message'   => $domain['application_domain'] . ' which belongs to ' . get_the_title($casino_id) . ' is not filtered',
                 'domain'    => $domain['application_domain'], 
                 'continue'  => false, 
                 'casino_id' => $casino_id, 
@@ -121,7 +117,7 @@ class Casanova_Casino_Actions{
             update_field('application_domains', $app_domains, $casino_id);
 
             wp_send_json_success( [ 
-                'message'   => $domain['application_domain'] . ' is filtered',
+                'message'   => $domain['application_domain'] . ' which belongs to ' . get_the_title($casino_id) . '  is filtered',
                 'domain'    => $domain['application_domain'], 
                 'continue'  => true, 
                 'casino_id' => $casino_id, 
